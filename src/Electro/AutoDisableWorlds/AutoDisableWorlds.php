@@ -2,6 +2,7 @@
 
 namespace Electro\AutoDisableWorlds;
 
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\entity\EntityTeleportEvent;
@@ -25,6 +26,14 @@ class AutoDisableWorlds extends PluginBase implements Listener{
         }
     }
 
+    public function onQuit(PlayerQuitEvent $event)
+    {
+        $player = $event->getPlayer();
+        $world = $player->getWorld();
+
+        $this->checkIfShouldUnloadWorld($world);
+    }
+
     public function onLevelChange(EntityTeleportEvent $event)
     {
         $player = $event->getEntity();
@@ -35,15 +44,20 @@ class AutoDisableWorlds extends PluginBase implements Listener{
         }
 
         $fromWorld = $event->getFrom()->getWorld();
-        if (count($fromWorld->getPlayers()) - 1 < 1 && $fromWorld !== $this->getServer()->getWorldManager()->getDefaultWorld())
+        $this->checkIfShouldUnloadWorld($fromWorld);
+    }
+
+    public function checkIfShouldUnloadWorld($world)
+    {
+        if (count($world->getPlayers()) - 1 < 1 && $world !== $this->getServer()->getWorldManager()->getDefaultWorld())
         {
-            if ($this->whitelist && in_array($fromWorld->getFolderName(), $this->worlds))
+            if ($this->whitelist && in_array($world->getFolderName(), $this->worlds))
             {
-                $this->getScheduler()->scheduleDelayedTask(new WorldDisableTask($this, $fromWorld), 10);
+                $this->getScheduler()->scheduleDelayedTask(new WorldDisableTask($this, $world), 10);
             }
-            if (!$this->whitelist && !in_array($fromWorld->getFolderName(), $this->worlds))
+            if (!$this->whitelist && !in_array($world->getFolderName(), $this->worlds))
             {
-                $this->getScheduler()->scheduleDelayedTask(new WorldDisableTask($this, $fromWorld), 10);
+                $this->getScheduler()->scheduleDelayedTask(new WorldDisableTask($this, $world), 10);
             }
         }
     }
