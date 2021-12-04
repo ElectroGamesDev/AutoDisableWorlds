@@ -1,0 +1,6 @@
+# If Mode = "Whitelist", all worlds in "Worlds" will auto disable when not being used. If Mode = "Blacklist", all worlds NOT in "Worlds" will will auto disable when not being used.
+Mode: Blacklist
+# Worlds in "Worlds" are the worlds that will/won't be auto disabled, dependiong on the mode. If you want all worlds to auto disable, turn on Blacklist mode and leave Worlds empty.
+# Heres an example of how "Worlds" should look.
+# Worlds: ["SkyBlock", "Mine", "Lobby"]
+Worlds: []

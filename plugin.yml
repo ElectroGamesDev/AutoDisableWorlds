@@ -1,0 +1,5 @@
+main : Electro\AutoDisableWorlds\AutoDisableWorlds
+name: AutoDisableWorlds
+version: 1.0.0
+api: 4.0.0
+Author: Electro
