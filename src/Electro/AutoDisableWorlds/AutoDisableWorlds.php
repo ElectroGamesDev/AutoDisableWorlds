@@ -44,6 +44,8 @@ class AutoDisableWorlds extends PluginBase implements Listener{
         }
 
         $fromWorld = $event->getFrom()->getWorld();
+        $toWorld = $event->getTo()->getWorld();
+        if ($fromWorld === $toWorld) return;
         $this->checkIfShouldUnloadWorld($fromWorld);
     }
 
