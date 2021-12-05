@@ -51,6 +51,7 @@ class AutoDisableWorlds extends PluginBase implements Listener{
     {
         if (count($world->getPlayers()) - 1 < 1 && $world !== $this->getServer()->getWorldManager()->getDefaultWorld())
         {
+            if (!$world->isLoaded()) return;
             if ($this->whitelist && in_array($world->getFolderName(), $this->worlds))
             {
                 $this->getScheduler()->scheduleDelayedTask(new WorldDisableTask($this, $world), 10);
@@ -64,6 +65,7 @@ class AutoDisableWorlds extends PluginBase implements Listener{
 
     public function unloadWorld($world)
     {
+        if (!$world->isLoaded()) return;
         $this->getServer()->getWorldManager()->unloadWorld($world);
     }
 }
