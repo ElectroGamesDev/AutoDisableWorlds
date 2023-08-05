@@ -7,6 +7,9 @@ use pocketmine\scheduler\Task;
 
 class WorldDisableTask extends Task{
 
+    private $plugin;
+    private $world;
+
     public function __construct(AutoDisableWorlds $plugin, $world){
         $this->plugin = $plugin;
         $this->world = $world;
